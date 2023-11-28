@@ -12,23 +12,29 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var swiftModel = TableViewDelegateAndData()
     var ViewModel = ModelViewModel()
-    var model:[String] = []{
+    var modelc: CurrencyModel?
+    var modeString: [[String: Any]] = []{
         didSet{
-            print("jhfj..")
-            swiftModel.setItems(currencyData: model)
+            swiftModel.setItems(currencyData: modeString)
         }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         swiftModel.refreshDelegate = self
-        swiftModel.setItems(currencyData: ["hello"])
+        swiftModel.setItems(currencyData: nil)
         tableView.delegate = swiftModel
         tableView.dataSource = swiftModel
     
         ViewModel.performFetchOperation{ val in
-            print("khk..",val)
-            model = val
+            switch val {
+            case.success(let val):
+                self.modelc = val
+                self.modeString = StructureData.shared.convertToArray(dict: (self.modelc?.rates as? [String: Any])!)
+            case .failure(let error):
+                print("failure..",error)
+            }
+          
             
         }
         
@@ -39,7 +45,10 @@ class ViewController: UIViewController {
 
 extension ViewController: RefreshTableView{
     func refresh() {
-        tableView.reloadData()
+        DispatchQueue.main.async{
+            self.tableView.reloadData()
+        }
+       
         print("fetch value...")
     }
     

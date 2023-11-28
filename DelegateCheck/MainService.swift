@@ -13,14 +13,15 @@ class MainService{
     
     class func fetchServiceData<T: Decodable>(responseType: T.Type ,completion: @escaping (Result<T,Errors>)->()){
         
-        let url = URL(string: "https://openexchangerates.org/api/latest.json?app_id=58e8ee51d7c34223a5f99445c8a45ca3")!
-        
+        let url = URL(string: ENV.URL.main)!
+        print("asdsa")
         URLSession.shared.dataTask(with: url){ (data, response,error) in
-            guard error == nil else {return}
+            guard error == nil else { print("json..."); return}
             let decoder = JSONDecoder()
             if let json = try? decoder.decode(responseType, from: data!){
+                print(json)
                 completion(.success(json))
             }
-        }
+        }.resume()
     }
 }

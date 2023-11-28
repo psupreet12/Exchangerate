@@ -7,11 +7,12 @@
 
 import Foundation
 protocol services{
-    func passServiceCall(completion: ([String])->())
+    func passServiceCall<T: Decodable>(responseType: T.Type,completion: @escaping (Result<T, Errors>) -> ())
 }
 class PassService: services{
     
-    func passServiceCall(completion: ([String])->()) {
-        completion(["asd","asd","11"])
+    func passServiceCall<T: Decodable>(responseType: T.Type,completion: @escaping (Result<T, Errors>) -> ()) {
+        MainService.fetchServiceData(responseType: responseType, completion: completion)
+        
     }
 }

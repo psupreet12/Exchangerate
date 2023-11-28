@@ -17,12 +17,12 @@ class TableViewDelegateAndData: NSObject{
 
     var refreshDelegate: RefreshTableView?
     var closureREF: ((Bool)->())!
-    var currencyData = [String]()
+    var currencyData = [[String: Any]]()
    
-    func setItems(currencyData: [String]) {
-        print("uyi..",currencyData)
+    func setItems(currencyData: [[String: Any]]?) {
+        guard let currencyData = currencyData else {return }
         self.currencyData = currencyData
-    
+      print("dd..",currencyData[0]["value"] as? Double)
         refreshDelegate?.refresh()
     }
     
@@ -38,9 +38,9 @@ extension TableViewDelegateAndData: UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+        print("jhkjh")
         let cell = UITableViewCell(style: .value1, reuseIdentifier: "Cell")
-        cell.textLabel?.text = currencyData[indexPath.row]
+        cell.textLabel?.text = currencyData[indexPath.row]["currency"] as? String
            cell.detailTextLabel?.text = ">"
            return cell
         

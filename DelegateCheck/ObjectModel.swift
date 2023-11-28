@@ -7,14 +7,7 @@
 
 import Foundation
 
-struct CurrencyModel: Decodable{
-    
-    var base: String = ""
-    var rates: [String: Double] = [:]
-}
-
-
-class StructureData{
+final class StructureData{
     static let shared = StructureData()
     private init(){
         

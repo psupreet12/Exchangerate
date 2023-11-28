@@ -8,14 +8,13 @@
 import Foundation
 
 class ModelViewModel{
-    
+
     var servicesDelegate: services?
     init(obj: services = PassService()){
         servicesDelegate = obj
     }
-    func performFetchOperation(completion: ([String])->()){
-        servicesDelegate?.passServiceCall{ val in
-            completion(val)            
-        }
+    func performFetchOperation(completion: @escaping (Result<CurrencyModel, Errors>) -> ()){
+        
+        servicesDelegate?.passServiceCall(responseType: CurrencyModel.self,completion: completion)
     }
 }
